@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { Project } = require('../../models');
-const { describe } = require('../../models/User');
 const withAuth = require('../../utils/auth');
 
+// Create a new project
 router.post('/', withAuth, async (req, res) => {
   try {
     const newProject = await Project.create({
@@ -16,6 +16,7 @@ router.post('/', withAuth, async (req, res) => {
   }
 });
 
+// Delete a project
 router.delete('/:id', withAuth, async (req, res) => {
   try {
     const projectData = await Project.destroy({
@@ -36,31 +37,25 @@ router.delete('/:id', withAuth, async (req, res) => {
   }
 });
 
-
-//http://localhost:3001/api/projects/13
+// Update a project
 router.put('/:id', withAuth, async (req, res) => {
-  console.log(req.body, req.params.id)
-  // try {
-    const projectData = await Project.update({
-      name: req.body.name,
-      description:req.body.description,
-      needed_funding: parseFloat(req.body.needed_funding) 
-    },{
+  try {
+    const projectData = await Project.update(req.body, {
       where: {
         id: req.params.id,
-        
+        user_id: req.session.user_id,
       },
     });
 
-    if (!projectData) {
+    if (!projectData[0]) {
       res.status(404).json({ message: 'No project found with this id!' });
       return;
     }
 
     res.status(200).json(projectData);
-  // } catch (err) {
-  //   res.status(500).json(err);
-  // }
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
