@@ -1,1 +1,0 @@
-# challenge-14-tech-blog

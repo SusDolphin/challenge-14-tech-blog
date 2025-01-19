@@ -1,0 +1,18 @@
+<div class="blog-container">
+  {{#if projects.length}}
+    {{#each projects}}
+    <div class="blog-post">
+      <div class="post-title">
+        <a href="/edit-post/{{id}}" class="post-link">{{title}}</a>
+        <span class="post-meta">Created on {{format_date createdAt}}</span>
+      </div>
+    </div>
+    {{/each}}
+  {{else}}
+    <p>You haven't created any posts yet.</p>
+  {{/if}}
+  
+  <div class="new-post-button-container">
+    <a href="/create-post-form" class="new-post-button">+ New Post</a>
+  </div>
+</div> 
